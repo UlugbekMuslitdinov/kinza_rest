@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 pillow = "*"
 djangorestframework = "*"
 pytelegrambotapi = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 
