@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ {% for dish in dishes %}
+     <form method="post" action="{% url 'restaurant:cart_add' dish.slug %}">
+     <fieldset>
+         <legend><h1>{{ dish.name }}</h1></legend>
+     {% csrf_token %}
+     {{ form.as_p }}
+     <button name="submit">Submit</button>
+     </fieldset>
+     </form>
+{% endfor %}
+</body>
+</html>

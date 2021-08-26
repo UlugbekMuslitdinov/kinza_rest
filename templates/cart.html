@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ cart.user.username }}
+{{ cart.items_number }}
+{{ cart.total_price }}
+<hr>
+{% if items %}
+    <ul>
+    {% for item in items %}
+        <form method="post" action="{% url 'restaurant:cart_update' item.product.slug %}">
+        <fieldset>
+            <h3>{{ item.quantity }}</h3>
+            <legend><h1>{{ item.product.name }}</h1></legend>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit">Submit</button>
+        </fieldset>
+        </form>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Cart is empty</p>
+{% endif %}
+</body>
+</html>

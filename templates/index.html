@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% block title %}Kinza{% endblock title %}
+
+{% block content %}
+{% if recent_dishes %}
+    <h1>New</h1>
+    {% for dish in recent_dishes %}
+        {{ dish.name }}
+        <form method="post" action="{% url 'restaurant:cart_add' dish.slug %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Submit</button>
+    {% endfor %}
+{% else %}
+    <p>No dishes available</p>
+{% endif %}
+</form>
+{% endblock content %}
