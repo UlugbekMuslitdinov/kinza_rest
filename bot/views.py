@@ -86,3 +86,18 @@ def category_detail(m):
         markup = types.ReplyKeyboardMarkup(row_width=5)
         markup.add(*tmp_list)
         tbot.send_message(m.chat.id, 'Choose dish:', reply_markup=markup)
+        tbot.register_next_step_handler(m, dish_detail)
+
+
+def dish_detail(m):
+    dish_name = m.text
+    try:
+        dish = Dish.objects.get(name=str(dish_name))
+    except Dish.DoesNotExist:
+        tbot.reply_to(m, 'This dish name is incorrect. Choose it once more')
+        tbot.register_next_step_handler(m, dish_detail)
+    else:
+        photo = open(str(dish.image.url), 'rb')
+        tbot.send_photo(m.chat.id, photo)
+        time.sleep(1)
+        tbot.send_message(m.chat.id, f'{dish.price}')
