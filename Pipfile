@@ -10,6 +10,7 @@ pillow = "*"
 djangorestframework = "*"
 pytelegrambotapi = "*"
 django-crispy-forms = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 
