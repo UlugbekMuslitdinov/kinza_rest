@@ -44,13 +44,9 @@ def greet(m):
         get_info.wait()
     else:
         tbot.send_message(m.chat.id, f'Hi, {user.first_name}')
-        markup = types.ReplyKeyboardMarkup(row_width=2)
-        itembtn1 = types.KeyboardButton('a')
-        itembtn2 = types.KeyboardButton('v')
-        itembtn3 = types.KeyboardButton('d')
-        markup.add(itembtn1, itembtn2, itembtn3)
-        time.sleep(3)
-        tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
+        time.sleep(1)
+        tbot.register_next_step_handler(m, category_list)
+
 
 
 def name_reg(m):
@@ -72,4 +68,6 @@ def name_reg(m):
 
 
 def category_list(m):
-    pass
+    markup = types.ReplyKeyboardMarkup(row_width=2)
+    markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
+    tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
