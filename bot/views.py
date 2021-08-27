@@ -6,7 +6,7 @@ import telebot
 from telebot import types
 from users.models import CustomUser
 from .validators import phone_validator, date_validator
-from restaurant.models import Category
+from restaurant.models import Category, Dish
 
 # =========================================================================================>
 
@@ -49,7 +49,7 @@ def greet(m):
         tml_list = [f'{category.name}' for category in Category.objects.all()]
         markup.add(*tml_list)
         tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
-        tbot.register_next_step_handler(m, category_list)
+        tbot.register_next_step_handler(m, category_detail)
 
 
 def name_reg(m):
@@ -64,7 +64,7 @@ def name_reg(m):
             markup = types.ReplyKeyboardMarkup(row_width=2)
             markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
             tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
-            tbot.register_next_step_handler(m, category_list)
+            tbot.register_next_step_handler(m, category_detail)
         else:
             tbot.send_message(m.chat.id, 'Please check your birthdate and provide all info again')
             tbot.register_next_step_handler(m, name_reg)
@@ -73,5 +73,16 @@ def name_reg(m):
         tbot.register_next_step_handler(m, name_reg)
 
 
-def category_list(m):
-    pass
+def category_detail(m):
+    category_name = m.text
+    try:
+        category = Category.objects.get(name=str(category_name))
+    except Category.DoesNotExist:
+        tbot.reply_to(m, 'This category does not exist. Please choose once more')
+        tbot.register_next_step_handler(m, category_detail)
+    else:
+        category_dishes = Dish.objects.filter(category=category)
+        tmp_list = [f'{dish.name}' for dish in category_dishes]
+        markup = types.ReplyKeyboardMarkup(row_width=5)
+        markup.add(*tmp_list)
+        tbot.send_message(m.chat.id, 'Choose dish:', reply_markup=markup)
