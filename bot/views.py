@@ -45,6 +45,9 @@ def greet(m):
     else:
         tbot.send_message(m.chat.id, f'Hi, {user.first_name}')
         time.sleep(1)
+        markup = types.ReplyKeyboardMarkup(row_width=2)
+        markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
+        tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
         tbot.register_next_step_handler(m, category_list)
 
 
@@ -58,6 +61,9 @@ def name_reg(m):
             birthdate = str(parts[2])
             CustomUser.objects.get_or_create(username=phone, defaults={'first_name': name, 'password': birthdate, 'telegram_id': m.chat.id})
             tbot.send_message(m.chat.id, 'Created!')
+            markup = types.ReplyKeyboardMarkup(row_width=2)
+            markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
+            tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
             tbot.register_next_step_handler(m, category_list)
         else:
             tbot.send_message(m.chat.id, 'Please check your birthdate and provide all info again')
@@ -68,6 +74,4 @@ def name_reg(m):
 
 
 def category_list(m):
-    markup = types.ReplyKeyboardMarkup(row_width=2)
-    markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
-    tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
+    pass
