@@ -61,8 +61,10 @@ def name_reg(m):
             birthdate = str(parts[2])
             CustomUser.objects.get_or_create(username=phone, defaults={'first_name': name, 'password': birthdate, 'telegram_id': m.chat.id})
             tbot.send_message(m.chat.id, 'Created!')
+            time.sleep(1)
             markup = types.ReplyKeyboardMarkup(row_width=2)
-            markup.add(types.KeyboardButton(i.name) for i in Category.objects.all())
+            tml_list = [f'{category.name}' for category in Category.objects.all()]
+            markup.add(*tml_list)
             tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
             tbot.register_next_step_handler(m, category_detail)
         else:
