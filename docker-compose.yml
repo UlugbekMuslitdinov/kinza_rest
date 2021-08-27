@@ -3,8 +3,12 @@ version: '3.8'
 services:
   web:
     build: .
-    command: python /code/manage.py runserver 0.0.0.0:8000
-#    command: gunicorn config.wsgi -b 0.0.0.0:8000
+#    command: python /code/manage.py runserver 0.0.0.0:8000
+    command: gunicorn config.wsgi -b 0.0.0.0:8000
+    environment:
+      - ENVIRONMENT=development
+      - SECRET_KEY=x3$h!%3$en!o%i^1aso2nmn2_pprhe)lk6vlh&1sfzw@e^a=%8
+      - DEBUG=1
     volumes:
       - .:/code
     ports:

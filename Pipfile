@@ -9,6 +9,11 @@ psycopg2-binary = "*"
 pillow = "*"
 djangorestframework = "*"
 pytelegrambotapi = "*"
+django-crispy-forms = "*"
+django-debug-toolbar = "*"
+whitenoise = "*"
+gunicorn = "*"
+dj-database-url = "*"
 
 [dev-packages]
 
