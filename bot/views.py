@@ -46,11 +46,9 @@ def greet(m):
         tbot.send_message(m.chat.id, f'Hi, {user.first_name}')
         time.sleep(1)
         markup = types.ReplyKeyboardMarkup(row_width=2)
-        markup.add(types.KeyboardButton('this'))
-        markup.add(types.KeyboardButton(f'{i.name}') for i in Category.objects.all())
+        markup.add(str(category.name) for category in Category.objects.all())
         tbot.send_message(m.chat.id, "Choose one letter:", reply_markup=markup)
         tbot.register_next_step_handler(m, category_list)
-
 
 
 def name_reg(m):
