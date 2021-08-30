@@ -7,6 +7,7 @@ from telebot import types
 from users.models import CustomUser
 from .validators import phone_validator, date_validator
 from restaurant.models import Category, Dish
+from .processors import tg_add_cart
 
 # =========================================================================================>
 
@@ -99,7 +100,11 @@ def dish_detail(m):
         tbot.reply_to(m, 'This dish name is incorrect. Choose it once more')
         tbot.register_next_step_handler(m, dish_detail)
     else:
-        photo = open(str(dish.image.url), 'rb')
-        tbot.send_photo(m.chat.id, photo)
-        time.sleep(1)
-        tbot.send_message(m.chat.id, f'{dish.price}')
+        add_cart_btn = types.InlineKeyboardButton(text='add cart', callback_data='add_cart')
+        quan = 0
+        quantity = types.InlineKeyboardButton(text=str(quan))
+        plus_btn = types.InlineKeyboardButton(text='+', callback_data='plus')
+        minus_btn = types.InlineKeyboardButton(text='-', callback_data='minus')
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(add_cart_btn, minus_btn, quantity, plus_btn)
+        tbot.send_photo(m.chat.id, dish.image, caption=f'{dish.price}', reply_markup=keyboard)
